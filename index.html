@@ -1,45 +1,58 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Data Vizualisation</title>
-    
-    <!-- Stylesheets -->
-    <link rel="stylesheet" href="https://bootswatch.com/4/flatly/bootstrap.min.css" type="text/css" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/dc/2.1.8/dc.min.css" type="text/css"/>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Data Vizualisation</title>
+
+  <!-- Stylesheets -->
+  <link rel="stylesheet" href="https://bootswatch.com/4/flatly/bootstrap.min.css" type="text/css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/dc/2.1.8/dc.min.css" type="text/css" />
+  <link rel="stylesheet" href="assets/css/style.css" type="text/css" />
 
 </head>
+
 <body>
-    <nav class="navbar navbar-expand-md navbar-dark bg-dark">
-        <div class="container-fluid">
-            <div class="navbar-header">
-                <a class="navbar-brand" href="#"><h3>SUICIDE RATES</h3></a>
-            </div>
-        </div>
-    </nav>
-    <main>
-        <section class="section">
-          <div class="container">
-            <div class="row">
-              <div class="col-xs-12 col-sm-12">
-                <h2>UK Suicide Statistics</h2>
-              </div>
-            </div>
-            <div id="yearSuicides_no"></div>
+  <nav class="navbar navbar-expand-sm navbar-dark bg-primary">
+        <a class="navbar-brand" href="#"></a>
+        <div class="row">
+          <div class="col-sm-12">
+            <h3 class="font">SUICIDE RATES</h3>
           </div>
-          <div id="year_selector"></div>
-          <div id="pro_rata"></div>
-        </section>
-    </main>
-    
-    <!-- The order of script address is important -->
-    
-    <script type="text/javascript" 
-    src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.17/d3.min.js"></script>
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/crossfilter/1.3.12/crossfilter.min.js"></script>
-    <script type="text/javascript"
-    src="https://cdnjs.cloudflare.com/ajax/libs/dc/2.1.8/dc.min.js"></script>
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/queue-async/1.0.7/queue.min.js"></script>
-    <script type="text/javascript" src="assets/js/graph.js"></script>
+        </div>
+  </nav>
+  <main>
+    <section class="section">
+      <div class="container">
+        <div class="row">
+          <div class="col-xs-12 col-sm-12">
+            <h2>UK Suicide Statistics</h2>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-xs-6">
+            <div id="year_selector"></div>
+          </div>  
+          <div class="col-xs-6">
+            <div id="country_selector"></div>
+          </div>
+        </div>  
+      </div>
+
+        <div id="ageSuicides_no"></div>
+        
+        <div id="pro_rata"></div>
+      </div>  
+    </section>
+  </main>
+
+  <!-- The order of script address is important -->
+
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.17/d3.min.js"></script>
+  <script type="text/javascript"
+    src="https://cdnjs.cloudflare.com/ajax/libs/crossfilter/1.3.12/crossfilter.min.js"></script>
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/dc/2.1.8/dc.min.js"></script>
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/queue-async/1.0.7/queue.min.js"></script>
+  <script type="text/javascript" src="assets/js/graph.js"></script>
