@@ -10,10 +10,10 @@ function makeGraphs(error, suicideData){
   //   d.gdp_for_year ($) = parseInt(d.gdp_for_year ($));
 
   // });
-  year_selector(ndx);     // Dropdown menu
-  listOf_countries(ndx);  // Dropdown menu
-  show_ageSuicides_no(ndx); // Bar Chart
-  show_pro_rata_suicides(ndx); // Bar Chart
+  year_selector(ndx);           // Dropdown menu
+  listOf_countries(ndx);        // Dropdown menu
+  show_ageSuicides_no(ndx);     // Bar Chart
+  show_pro_rata_suicides(ndx);  // Bar Chart
 
   dc.renderAll();
 }
@@ -44,7 +44,7 @@ function listOf_countries(ndx){
 
 function show_ageSuicides_no(ndx){
   var age_dim = ndx.dimension(dc.pluck("age"));
-  var suicide_no_group = age_dim.group();//.reduceSum(dc.pluck("suicides_no"));
+  var suicide_no_group = age_dim.group().reduceSum(dc.pluck("suicides_no"));
 
   dc.barChart("#ageSuicides_no")
         .width(350)
@@ -55,7 +55,7 @@ function show_ageSuicides_no(ndx){
         .transitionDuration(500)
         .x(d3.scale.ordinal())
         .xUnits(dc.units.ordinal)
-        //.elasticY(true) this lets the y axis value to alter for each different select menu selection 
+        .elasticY(true) //this lets the y axis value to alter for each different select menu selection 
         .xAxisLabel("AGE")
         .yAxis().ticks(10);
 }
@@ -72,6 +72,7 @@ function show_pro_rata_suicides(ndx){
         .transitionDuration(500)
         .x(d3.scale.ordinal())
         .xUnits(dc.units.ordinal)
+        .elasticY(true)
         .xAxisLabel("GENDER")
         .yAxis().ticks(20);
 
