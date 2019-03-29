@@ -1,94 +1,176 @@
 queue()
-      .defer(d3.json, "assets/data/suicideRates.json")
-      .await(makeGraphs);
+    .defer(d3.csv, "assets/data/life_expectancy.csv")
+    .await(makeGraphs);
 
-function makeGraphs(error, suicideData){
-  var ndx = crossfilter(suicideData);
 
-  // suicideData.forEach(function(d){
-  //   d.age = parseInt(d.age);
-  //   d.gdp_for_year ($) = parseInt(d.gdp_for_year ($));
+function makeGraphs(error, worldData) {
+    var ndx = crossfilter(worldData);
 
-  // });
-  year_selector(ndx);           // Dropdown menu
-  listOf_countries(ndx);        // Dropdown menu
-  show_ageSuicides_no(ndx);     // Bar Chart
-  show_pro_rata_suicides(ndx);  // Bar Chart
+    show_country_selector(ndx);
+    show_status_balance(ndx);
+    show_average_life_expectancy(ndx);
+    show_average_adultMortality(ndx);
+   show_life_expectancy_vs_GDP(ndx);
 
-  dc.renderAll();
+
+    dc.renderAll();
 }
 
-// Dropdown menu
-
-function year_selector(ndx){
-  year_dim = ndx.dimension(dc.pluck("year"));
-  year_group = year_dim.group()
-
-  dc.selectMenu("#year_selector")
-    .dimension(year_dim)
-    .group(year_group);
+function show_country_selector(ndx)
+{
+    var countryDim = ndx.dimension(
+        function (p) { return p.Country;
+    });
+    var countrySelect = countryDim.group();
+    var select = dc.selectMenu("#country_selector")
+        .dimension(countryDim)
+        .group(countrySelect);
+         select.title(function (d) {
+            return d.key;
+        })
 }
 
-// Dropdown menu
+function show_status_balance(ndx) {
+    var statusDim = ndx.dimension(
+        function (p) { return p.Status;
+        });
+    var statusMix = statusDim.group();
 
-function listOf_countries(ndx){
-  country_dim = ndx.dimension(dc.pluck("country"));
-  country_group = country_dim.group()
+    dc.pieChart("#status-balance-pie")
+        .dimension(statusDim)
+        .group(statusMix)
+        .cx(195)
+        .cy(175)
+        .drawPaths(true)
+        .innerRadius(40)
+        .radius(150)
+        .transitionDuration(750);
+}
 
-  dc.selectMenu("#country_selector")
-    .dimension(country_dim)
-    .group(country_group);
-  }
+function show_average_life_expectancy(ndx) {
+    var statusDim = ndx.dimension(dc.pluck("Status"));
+    var averageLifeExpectancyByStatus = statusDim.group().reduce(
+        function (p, v) {
+            p.count++;
+            p.total += parseInt(v.LifeExpectancy);
+            return p;
+        },
+        function (p, v) {
+            p.count--;
+            if (p.count == 0) {
+                p.total = 0;
+            } else {
+                p.total -= parseInt(v.LifeExpectancy);
+            }
+            return p;
+        },
+        function () {
+            return {count: 0, total: 0};
+        }
+    );
 
-// Bar Chart
-
-function show_ageSuicides_no(ndx){
-  var age_dim = ndx.dimension(dc.pluck("age"));
-  var suicide_no_group = age_dim.group().reduceSum(dc.pluck("suicides_no"));
-
-  dc.barChart("#ageSuicides_no")
+    dc.barChart("#average-Life-expectancy")
         .width(350)
-        .height(400)
-        .margins({top: 20, right: 50, bottom: 30, left: 60})
-        .dimension(age_dim)
-        .group(suicide_no_group)
-        .transitionDuration(500)
-        .x(d3.scale.ordinal())
-        .xUnits(dc.units.ordinal)
-        .elasticY(true) //this lets the y axis value to alter for each different select menu selection 
-        .xAxisLabel("AGE")
-        .yAxis().ticks(10);
-}
-
-function show_pro_rata_suicides(ndx){
-  var sex_dim = ndx.dimension(dc.pluck("sex"));
-  var suicides_pro_rata = sex_dim.group();
-  dc.barChart("#pro_rata")
-        .width(350)
-        .height(400)
-        .margins({top: 20, right: 50, bottom: 30, left: 50})
-        .dimension(sex_dim)
-        .group(suicides_pro_rata)
+        .height(350)
+        .margins({top: 10, right: 50, bottom: 30, left: 50})
+        .dimension(statusDim)
+        .group(averageLifeExpectancyByStatus)
+        .valueAccessor(function (d) {
+            if (d.value.count == 0) {
+                return 0;
+            } else {
+                return d.value.total / d.value.count;
+            }
+        })
         .transitionDuration(500)
         .x(d3.scale.ordinal())
         .xUnits(dc.units.ordinal)
         .elasticY(true)
-        .xAxisLabel("GENDER")
+        .xAxisLabel("Country classification")
+        .yAxisLabel("Life Expectancy Age")
         .yAxis().ticks(20);
-
 }
 
+function  show_average_adultMortality(ndx) {
+    var statusDim = ndx.dimension(dc.pluck("Status"));
 
+    var averageAdultMortalityByStatus = statusDim.group().reduce(
+        function (p, v) {
+            p.count++;
+            p.total += parseInt(v.AdultMortality);
+            return p;
+        },
+        function (p, v) {
+            p.count--;
+            if (p.count == 0) {
+                p.total = 0;
+            } else {
+                p.total -= parseInt(v.AdultMortality);
+            }
+            return p;
+        },
+        function () {
+            return {count: 0, total: 0};
+        }
+    );
 
+    dc.barChart("#average-adult-mortality")
+        .width(350)
+        .height(350)
+        .margins({top: 10, right: 50, bottom: 30, left: 50})
+        .dimension(statusDim)
+        .group(averageAdultMortalityByStatus)
+        .valueAccessor(function (d) {
+            if (d.value.count == 0) {
+                return 0;
+            } else {
+                return d.value.total / d.value.count;
+            }
+        })
+        .transitionDuration(500)
+        .x(d3.scale.ordinal())
+        .xUnits(dc.units.ordinal)
+        .elasticY(true)
+        .xAxisLabel("Country classification")
+        .yAxisLabel("Adult Mortality per Thousand")
+        .yAxis().ticks(20);
+}
 
+function show_life_expectancy_vs_GDP(ndx){
+        var statusColors = d3.scale.ordinal()
+            .domain(["Developed"], ["Developing"])
+            .range(["grey", "blue"]);
+        var gnpDim = ndx.dimension(function (p) {
+            return parseInt(p.GDP);
+        });
 
+        var minGNP = gnpDim.bottom(1)[0].GDP;
+        var maxGNP = gnpDim.top(1)[0].GDP;
 
+        var lifeAndMoneyDim = ndx.dimension(function (p) {
+            return [p.GDP, p.LifeExpectancy, p.Status, p.Country];
+        });
+        var lifeAndMoneyGroup = lifeAndMoneyDim.group();
 
-
-
-
-
-
-
-
-
+        dc.scatterPlot("#life-expectancy-vs-gdp")
+            .width(1000)
+            .height(400)
+            .x(d3.scale.linear().domain([0, 88000]))
+            .y(d3.scale.linear().domain(["50", "90"]))
+            .brushOn(false)
+            .symbolSize(8)
+            .clipPadding(1)
+            .yAxisLabel("Life Expectancy")
+            .xAxisLabel(" Gross National Income (GNI) per capita at purchasing power parity (PPP)")
+            .title(function (q) {
+                return q.key[3];
+            })
+            .colorAccessor(function (c) {
+                return c.key[2];
+            })
+            .colors(statusColors)
+            .dimension(lifeAndMoneyDim)
+            .group(lifeAndMoneyGroup)
+            .margins({top: 40, right: 50, bottom: 50, left: 50})
+            .transitionDuration(750);
+}

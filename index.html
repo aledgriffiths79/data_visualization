@@ -15,38 +15,63 @@
 </head>
 
 <body>
-  <nav class="navbar navbar-expand-sm navbar-dark bg-primary">
-        <a class="navbar-brand" href="#"></a>
-        <div class="row">
-          <div class="col-sm-12">
-            <h3 class="font">SUICIDE RATES</h3>
-          </div>
-        </div>
-  </nav>
-  <main>
-    <section class="section">
-      <div class="container">
-        <div class="row">
-          <div class="col-xs-12 col-sm-12">
-            <h2>UK Suicide Statistics</h2>
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-xs-6">
-            <div id="year_selector"></div>
-          </div>  
-          <div class="col-xs-6">
-            <div id="country_selector"></div>
-          </div>
-        </div>  
-      </div>
 
-        <div id="ageSuicides_no"></div>
-        
-        <div id="pro_rata"></div>
-      </div>  
-    </section>
+  <nav class="navbar navbar-default">
+      <div class="container">
+          <div class="navbar-header full-width">
+              <a href="#" class="navbar-brand">World Health Organisation Country Data 2015</a>
+              <a href="simon.html" class="navbar-brand right">Bored of looking at graphs? Play Simon here...</a>
+          </div>
+      </div>
+  </nav>
+
+  <main>
+      <div class="container">
+          <section class="section">
+          <div class="jumbotron">
+              <h2 class="display-3 text-center">Developed and Developing Countries Life Expectancy Correlation </h2>
+              <hr class="my-4">
+              <div class="row">
+                  <div class="col-xs-12 col-sm-12">
+                      <p class="lead">This dashboard uses World Health Organisation data from 2015. The data is used to explore correlations between developed and devoloping countries and whether their gross national
+                      income per capita corrolates with life expectancy.</p>
+                  </div>
+                  <div id="country-selector" class="custom-select lead">Country Selector </div>
+              </div>
+          </div>
+      </section>
+      <section class="section">
+          <div class="container">
+              <div class="row">
+                  <div class="col-xs-12 col-sm-4 text-center custom-chart" id="status-balance-pie"></div>
+                  <div class="col-xs-12 col-sm-4 text-center custom-chart" id="average-Life-expectancy"></div>
+                  <div class="col-xs-12 col-sm-4 text-center custom-chart" id="average-adult-mortality"></div>
+              </div>
+              <div class="row">
+                  <div class="col-xs-12 col-sm-4 text-center">
+                       <p class="section-paragraph">Developing countries outnumber developed 4 to 1</p>
+                  </div>
+                  <div class="col-xs-12 col-sm-4 text-center">
+                       <p class="section-paragraph">Overall developed countries live 11 years longer</p>
+                  </div>
+                  <div class="col-xs-12 col-sm-4 text-center">
+                       <p class="section-paragraph">Adults between 15 - 65 are 2.2 times more likely to die</p>
+                  </div>
+              </div>
+              <hr>
+              <hr>
+              <div class="row">
+                  <div class="col-xs-12 col-sm-12 text-center">
+                      <h4 class="section-paragraph">There is a strong correlation between gross nation income (GNI)
+                          per capita based on purchasing power parity (PPP) and life expectancy. </h4>
+                  </div>
+                  <div class="col-xs-12 col-sm-12 text-center custom-chart" id="life-expectancy-vs-gdp"></div>
+              </div>
+          </div>
+      </section>
+      </div>
   </main>
+</body>
 
   <!-- The order of script address is important -->
 
